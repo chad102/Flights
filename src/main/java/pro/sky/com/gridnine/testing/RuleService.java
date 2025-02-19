@@ -30,12 +30,6 @@ public class RuleService implements Rule {
 
 
     public List<Flight> flightsWithTimeOnEarth(List<Flight> flights) {
-//        Duration duration = Duration.between(
-//                flights.stream()
-//                        .map(Flight::getSegments)
-//                        .map(e -> e.stream()
-//                                .allMatch(t -> t.getDepartureDate().is))
-//        )
         return flights.stream()
                 .filter(e -> e.getSegments().stream()
                         .allMatch(t -> (t.getArrivalDate().getHour() - t.getDepartureDate().getHour() < 2) &&
