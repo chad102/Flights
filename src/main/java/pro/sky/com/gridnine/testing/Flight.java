@@ -1,4 +1,4 @@
-package com.gridnine.testing;
+package pro.sky.com.gridnine.testing;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,7 +49,7 @@ class FlightBuilder {
 /**
  * Bean that represents a flight.
  */
-class Flight {
+ public class Flight {
     private final List<Segment> segments;
 
     Flight(final List<Segment> segs) {
@@ -70,7 +70,7 @@ class Flight {
 /**
  * Bean that represents a flight segment.
  */
-class Segment {
+ class Segment {
     private final LocalDateTime departureDate;
 
     private final LocalDateTime arrivalDate;
