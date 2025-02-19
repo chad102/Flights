@@ -15,7 +15,7 @@ public class RuleService implements Rule {
     public List<Flight> flightsAfterCurrentTime(List<Flight> flights) {
         return flights.stream()
                 .filter(e -> e.getSegments().stream()
-                        .filter(t -> t.getDepartureDate().isAfter(currentDateTime)).isParallel())
+                        .allMatch(segment -> segment.getDepartureDate().isAfter(currentDateTime)))
                 .collect(Collectors.toList());
         }
 
@@ -23,15 +23,23 @@ public class RuleService implements Rule {
     public List<Flight> segsArrTimeBeforeDepTime(List<Flight> flights) {
         return flights.stream()
                 .filter(e-> e.getSegments().stream()
-                        .filter(t -> t.getArrivalDate().isAfter(t.getDepartureDate())).isParallel())
+                        .allMatch(t -> t.getArrivalDate().isAfter(t.getDepartureDate())))
                 .collect(Collectors.toList());
+
     }
 
 
     public List<Flight> flightsWithTimeOnEarth(List<Flight> flights) {
+//        Duration duration = Duration.between(
+//                flights.stream()
+//                        .map(Flight::getSegments)
+//                        .map(e -> e.stream()
+//                                .allMatch(t -> t.getDepartureDate().is))
+//        )
         return flights.stream()
                 .filter(e -> e.getSegments().stream()
-                        .filter(t -> t.getDepartureDate().getHour() - t.getArrivalDate().getHour() < 2).isParallel())
+                        .allMatch(t -> (t.getArrivalDate().getHour() - t.getDepartureDate().getHour() < 2) &&
+                                (t.getArrivalDate().getDayOfMonth() - t.getDepartureDate().getDayOfMonth() == 0)))
                 .collect(Collectors.toList());
     }
 }
