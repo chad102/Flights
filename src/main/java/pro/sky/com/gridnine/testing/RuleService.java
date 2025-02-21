@@ -30,10 +30,41 @@ public class RuleService implements Rule {
 
 
     public List<Flight> flightsWithTimeOnEarth(List<Flight> flights) {
+//        Duration duration = Duration.between(
+//                flights.stream()
+//                        .findAny()
+//                        .get()
+//                        .getSegments()
+//                        .stream().findAny()
+//                        .get()
+//                        .getArrivalDate()
+//                        .toLocalTime()
+//                        ,
+//
+//                flights.stream()
+//                        .findAny()
+//                        .get()
+//                        .getSegments()
+//                        .stream().findAny()
+//                        .get()
+//                        .getDepartureDate()
+//                        .toLocalTime()
+//        );
+
         return flights.stream()
-                .filter(e -> e.getSegments().stream()
-                        .allMatch(t -> (t.getArrivalDate().getHour() - t.getDepartureDate().getHour() < 2) &&
-                                (t.getArrivalDate().getDayOfMonth() - t.getDepartureDate().getDayOfMonth() == 0)))
+                .filter(flight -> {
+                    long totalGroundTime = 0;
+                    if (flight.getSegments().size() == 1) {
+                        return true;
+                    }
+                    for (int i = 0; i < flight.getSegments().size() - 1; i++) {
+                        totalGroundTime = totalGroundTime + Duration.between(
+                                flight.getSegments().get(i).getArrivalDate(),
+                                flight.getSegments().get(i + 1).getDepartureDate()).toMinutes();
+                    }
+                    System.out.println(totalGroundTime);
+                    return totalGroundTime <= 120;
+                })
                 .collect(Collectors.toList());
     }
 }
